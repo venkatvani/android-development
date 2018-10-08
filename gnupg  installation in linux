@@ -1,0 +1,103 @@
+Install In Gnupg :----------------------
+
+sudo apt-get install gnupg
+sudo apt-get update
+sudo apt-get install rng-tools
+sudo sed -i -e 's|#HRNGDEVICE=/dev/hwrng|HRNGDEVICE=/dev/urandom|' /etc/default/rng-tools
+sudo service rng-tools start
+
+Generate a public/private key pair:-------------------------
+
+gpg --gen-key
+
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 
+ 
+ select 1
+
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048)
+			2048
+
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0)
+		0
+	Key does not expire at all
+Is this correct? (y/N) 
+		y
+
+Real name: vishnu    
+Email address: vishnukumar@gmail.com  
+Comment: Securitylab
+
+
+You selected this USER-ID:
+    "Bob Bobson (sanog key) <bob@bob.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit?
+
+
+    Type 'O' then return.   
+
+
+
+Enter passphrase: 0987654321
+Repeat passphrase:0987654321
+
+list the keys---------
+
+gpg --list-keys
+
+
+
+Encrypt with GPG using public key-----------------
+
+
+Create a plain text file called "mysecrets.txt" 
+
+
+encrypt the file:---------------------------
+	gpg -e my-secrets-myname.txt
+
+
+Verify that you now have encrypted files present in your directory:-----------------
+	ls -l my-secrets-myname.txt*
+
+view the contents of this file -------------------------
+	cat my-secrets-myname.txt.gpg    
+
+encrypt with an ASCII encoding :-------------------------------
+
+	gpg -a -e -r bob@bob.com mysecrets.txt
+
+Check the contents of the directory again:-------------------------------------
+
+	ls -l mysecrets.txt*
+
+view the contents of this file ------------------------------
+	cat my-secrets-myname.txt.asc
+
+Now, you can delete the original .txt file:-------------------------------------
+
+	 rm my-secrets-myname.txt
+
+Decrypting files:---------------------------------------------------
+
+          gpg my-secrets-myname.txt.asc
+
+Enter passphrase: 0987654321
+
+If the file original file still exists, then gpg will ask you before it overwrites it:-------
+
+		File `mysecrets.txt' exists. Overwrite? (y/N) y
+
+gpg my-secrets-myname.txt.asc
